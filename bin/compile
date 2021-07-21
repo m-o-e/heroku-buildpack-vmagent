@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+source bin/vars.sh
+
+echo "-----> vmagent-buildpack: Installing vmagent ${VMAGENT_VERSION}"
+
+CACHE_PATH="${CACHE_DIR}/vmagent-${VMAGENT_SHA256}"
+if [[ ! -s "${CACHE_PATH}" ]]; then
+  echo '-----> vmagent-buildpack: Downloading vmutils from GitHub'
+  curl \
+    --silent \
+    --location \
+    --output "vmutils.tgz" \
+    "https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/${VMAGENT_VERSION}/vmutils-amd64-${VMAGENT_VERSION}.tar.gz"
+
+  echo '-----> vmagent-buildpack: Extracting vmagent binary'
+  tar xzf vmutils.tgz vmagent-prod
+  rm vmutils.tgz
+
+  echo '-----> vmagent-buildpack: Verifying vmagent binary'
+  sha256sum --check - <<< "${VMAGENT_SHA256}  vmagent-prod"
+
+  echo '-----> vmagent-buildpack: Caching vmagent binary'
+  mv vmagent-prod "${CACHE_PATH}"
+fi
+
+echo '-----> vmagent-buildpack: Copying vmagent binary into bin/'
+mkdir -p "${BUILD_DIR}/bin"
+cp "${CACHE_PATH}" "${BUILD_DIR}/bin/vmagent"
+chmod +x "${BUILD_DIR}/bin/vmagent"
