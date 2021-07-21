@@ -12,6 +12,8 @@ testCompile() {
   assertCapturedSuccess
   assertCaptured "Installing vmagent ${VMAGENT_VERSION}"
   assertFileExists "${BUILD_DIR}/bin/vmagent"
+  assertFileExists "${BUILD_DIR}/bin/start-vmagent"
+  assertFileExists "${BUILD_DIR}/config/vmagent-prometheus.yml.erb"
   assertFileSHA256 "${VMAGENT_SHA256}" "${BUILD_DIR}/bin/vmagent"
 }
 

@@ -33,3 +33,11 @@ echo '-----> vmagent-buildpack: Copying vmagent binary into bin/'
 mkdir -p "${BUILD_DIR}/bin"
 cp "${CACHE_PATH}" "${BUILD_DIR}/bin/vmagent"
 chmod +x "${BUILD_DIR}/bin/vmagent"
+
+echo '-----> vmagent-buildpack: Copying vmagent start script into bin/'
+cp bin/start-vmagent "${BUILD_DIR}/bin/start-vmagent"
+chmod +x "${BUILD_DIR}/bin/start-vmagent"
+
+echo '-----> vmagent-buildpack: Copying vmagent-prometheus.yml.erb into config/'
+mkdir -p "${BUILD_DIR}/config"
+cp config/vmagent-prometheus.yml.erb "${BUILD_DIR}/config/vmagent-prometheus.yml.erb"

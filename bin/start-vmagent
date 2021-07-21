@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+# A script to start vmagent and the command passed as ARGV as child processes
+# and wait for either to exit.
+#
+# Inspired by start-nginx from the Heroku nginx buildpack:
+# https://github.com/heroku/heroku-buildpack-nginx/blob/main/bin/start-nginx
+
+psmgr=/tmp/vmagent-buildpack-wait
+rm -f $psmgr
+mkfifo $psmgr
+
+# Render the config file
+erb config/vmagent-prometheus.yml.erb > config/vmagent-prometheus.yml
+
+# Start App Server
+(
+  # Take the command passed to this bin and start it.
+  # E.g. bin/start-vmagent bundle exec unicorn -c config/unicorn.rb
+  COMMAND=$@
+  echo "buildpack=vmagent at=start-app cmd=$COMMAND"
+  $COMMAND
+  echo 'app' >$psmgr
+) &
+
+# Start vmagent
+(
+  echo 'buildpack=vmagent at=start-vmagent'
+  echo -n "${VMAGENT_REMOTE_WRITE_PASSWORD}" > /tmp/vmagent-password
+  bin/vmagent \
+    -promscrape.config=config/vmagent-prometheus.yml \
+    -httpListenAddr=":${VMAGENT_HTTP_PORT:-8429}" \
+    -remoteWrite.url="${VMAGENT_REMOTE_WRITE_URL}/api/v1/write" \
+    -remoteWrite.basicAuth.username="${VMAGENT_REMOTE_WRITE_USERNAME}" \
+    -remoteWrite.basicAuth.passwordFile=/tmp/vmagent-password \
+    -remoteWrite.maxDiskUsagePerURL="1GB"
+  echo 'vmagent' >$psmgr
+) &
+
+# This read will block the process waiting on a msg to be put into the fifo.
+# If any of the processes defined above should exit,
+# a msg will be put into the fifo causing the read operation
+# to un-block. The process putting the msg into the fifo
+# will use it's process name as a msg so that we can print the offending
+# process to stdout.
+read exit_process <$psmgr
+echo "buildpack=vmagent at=exit process=$exit_process"
+exit 1
