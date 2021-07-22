@@ -33,7 +33,7 @@ erb config/vmagent-prometheus.yml.erb > config/vmagent-prometheus.yml
     -remoteWrite.url="${VMAGENT_REMOTE_WRITE_URL}/api/v1/write" \
     -remoteWrite.basicAuth.username="${VMAGENT_REMOTE_WRITE_USERNAME}" \
     -remoteWrite.basicAuth.passwordFile=/tmp/vmagent-password \
-    -remoteWrite.maxDiskUsagePerURL="1GB"
+    -remoteWrite.maxDiskUsagePerURL="${VMAGENT_MAX_DISK_USAGE:-1GB}"
   echo 'vmagent' >$psmgr
 ) &
 

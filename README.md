@@ -85,6 +85,10 @@ for example `app=my-app,environment=production`.
 
 **Optional.** How frequently to scrape metrics from the app server (default: 15s).
 
+#### `VMAGENT_MAX_DISK_USAGE`
+
+**Optional.** The maximum file-based buffer size in bytes that vmagent can use (default: 1GB).
+
 #### `VMAGENT_HTTP_PORT`
 
 **Optional.** TCP port vmagent listens on for http connections (default: 8429).
