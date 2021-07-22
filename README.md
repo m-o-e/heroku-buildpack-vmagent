@@ -64,6 +64,11 @@ on how vmagent is configured to scrape the app server._
 
 **Required.** The basic auth password for the remote write URL.
 
+#### `VMAGENT_EXTERNAL_LABELS`
+
+**Optional.** A comma separated list of additional external labels to add to all metrics in `key=value` format,
+for example `app=my-app,environment=production`.
+
 #### `VMAGENT_VERSION`
 
 **Optional.** The version of vmagent to install (default: see [bin/vars.sh](bin/vars.sh)).
