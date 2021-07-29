@@ -6,6 +6,11 @@
 # Inspired by start-nginx from the Heroku nginx buildpack:
 # https://github.com/heroku/heroku-buildpack-nginx/blob/main/bin/start-nginx
 
+if [[ -n "${VMAGENT_DISABLED}" ]]; then
+  echo "VMAGENT_DISABLED is set, executing the app server without vmagent support"
+  exec "$@"
+fi
+
 psmgr=/tmp/vmagent-buildpack-wait
 rm -f $psmgr
 mkfifo $psmgr
