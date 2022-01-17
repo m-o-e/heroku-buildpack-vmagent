@@ -12,7 +12,9 @@ Set vmagent config vars on your Heroku app:
 $ heroku config:set \
   VMAGENT_REMOTE_WRITE_URL="https://victoriametrics.example.com" \
   VMAGENT_REMOTE_WRITE_USERNAME="<vminsert_username>" \
-  VMAGENT_REMOTE_WRITE_PASSWORD="<vminsert_password>"
+  VMAGENT_REMOTE_WRITE_PASSWORD="<vminsert_password>" \
+  VMAGENT_SCRAPE_USERNAME="<scrape_request_username>" \
+  VMAGENT_SCRAPE_PASSWORD="<scrape_request_password>"
 ```
 
 _See the [Configuration section](#configuration) below for a full list of config vars that can be set._
@@ -63,6 +65,14 @@ on how vmagent is configured to scrape the app server._
 #### `VMAGENT_REMOTE_WRITE_PASSWORD`
 
 **Required.** The basic auth password for the remote write URL.
+
+#### `VMAGENT_SCRAPE_USERNAME`
+
+**Required.** The basic auth username for the scrape request.
+
+#### `VMAGENT_SCRAPE_PASSWORD`
+
+**Required.** The basic auth password for the scrape request.
 
 #### `VMAGENT_EXTERNAL_LABELS`
 
