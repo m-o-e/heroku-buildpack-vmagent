@@ -16,7 +16,7 @@ if [[ ! -s "${CACHE_PATH}" ]]; then
     --silent \
     --location \
     --output "vmutils.tgz" \
-    "https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/${VMAGENT_VERSION}/vmutils-amd64-${VMAGENT_VERSION}.tar.gz"
+    "https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/${VMAGENT_VERSION}/vmutils-linux-amd64-${VMAGENT_VERSION}.tar.gz"
 
   echo '-----> vmagent-buildpack: Extracting vmagent binary'
   tar xzf vmutils.tgz vmagent-prod
