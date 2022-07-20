@@ -103,6 +103,13 @@ for example `app=my-app,environment=production`.
 
 **Optional.** TCP port vmagent listens on for http connections (default: 8429).
 
+#### `VMAGENT_STREAM_PARSE`
+
+**Optional.** Stream parse mode (default: true. see [config/vmagent-prometheus.yml.erb](config/vmagent-prometheus.yml.erb)).
+
+#### `VMAGENT_ALLOWED_BYTES`
+
+**Optional.** Memory allowed bytes (default: 100MB. see [bin/start-vmagent](bin/start-vmagent)).
 ## Testing
 
 This buildpack includes tests that can be run using the [heroku-buildpack-testrunner](https://github.com/heroku/heroku-buildpack-testrunner).
