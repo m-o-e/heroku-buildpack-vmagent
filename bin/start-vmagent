@@ -16,7 +16,10 @@ rm -f $psmgr
 mkfifo $psmgr
 
 # Render the config file
-erb config/vmagent-prometheus.yml.erb > config/vmagent-prometheus.yml
+sed -e "s/\$DYNO/$DYNO/g;s/\$HEROKU_APP_NAME/$HEROKU_APP_NAME/g;s/\$PORT/$PORT/g;s/\$VMAGENT_SCRAPE_USERNAME/$VMAGENT_SCRAPE_USERNAME/g;s/\$VMAGENT_SCRAPE_PASSWORD/$VMAGENT_SCRAPE_PASSWORD/g" <config/vmagent-prometheus.yml.tpl >config/vmagent-prometheus.yml
+
+# erb config/vmagent-prometheus.yml.erb > config/vmagent-prometheus.yml
+
 
 # Start App Server
 (
